@@ -1,0 +1,126 @@
+Step-by-Step: Connecting React Frontend to Express Backend
+
+
+---
+
+🔌 1. Backend (API) Setup Recap
+
+Your Express API should be running on something like:
+
+http://localhost:3000/api/movies
+
+And it supports:
+
+GET all movies
+
+POST to add a movie
+
+PUT to update a movie
+
+DELETE to remove a movie
+
+
+
+---
+
+🌐 2. Frontend: Fetch Movies from Backend
+
+In your App.jsx or a component like MovieList.jsx, fetch the movies using fetch() or axios.
+
+Example with fetch() in React:
+
+import React, { useEffect, useState } from "react";
+
+function App() {
+  const [movies, setMovies] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/api/movies")
+      .then((res) => res.json())
+      .then((data) => setMovies(data))
+      .catch((err) => console.error("Error fetching movies:", err));
+  }, []);
+
+  return (
+    <div className="p-8">
+      <h1 className="text-3xl font-bold mb-4">🎬 Movie Recommendations</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {movies.map((movie) => (
+          <div key={movie.id} className="bg-white shadow p-4 rounded">
+            <img
+              src={movie.poster}
+              alt={movie.title}
+              className="w-full h-64 object-cover rounded"
+            />
+            <h2 className="text-xl mt-2 font-semibold">{movie.title}</h2>
+            <p className="text-sm text-gray-600">Genre: {movie.genre}</p>
+            <p className="text-sm text-yellow-500">⭐ {movie.rating}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default App;
+
+
+---
+
+⚠️ 3. CORS Setup (Backend)
+
+Make sure you added CORS to the Express backend:
+
+npm install cors
+
+// in server.js
+const cors = require('cors');
+app.use(cors()); // allow all origins or configure specific ones
+
+
+---
+
+🔧 4. Optional: Use proxy (for local dev)
+
+If you're using Vite:
+
+// vite.config.js
+export default defineConfig({
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000'
+    }
+  }
+});
+
+Then in React, you can use:
+
+fetch('/api/movies')
+
+Instead of the full URL.
+
+
+---
+
+✅ Now Your Frontend and Backend Are Connected!
+
+The frontend fetches movies from the backend
+
+The backend serves JSON responses
+
+You can later POST new movies via a form, or add buttons to DELETE or UPDATE movies
+
+
+
+---
+
+🧪 Want to Add Features?
+
+Would you like me to help with:
+
+Adding a movie submission form?
+
+Implementing delete/update buttons in the UI?
+
+Deploying both frontend and backend?
+
